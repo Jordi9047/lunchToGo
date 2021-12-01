@@ -2,72 +2,147 @@ package Assignment;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import Arrays.Ex1;
+import Switch.TEST;
 import general.*;
 
 public class lunchToGoHotFood {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		Scanner key = new Scanner(System.in);
 
 		int option = 0;
 
-		String[] items = { "Burger", "Lasagne", "Stew", "Veg Soup", "Chicken Soup", "Sausages", "Sausage Rolls",
-				"Vol au vent", "Chicken curry", };// List of the items used for lunches and hot food
+		String[] items = { "Burger", "Lasagne", "Stew", "Veg Soup", "Chicken Soup", "Sausages", "Sausage Rolls","Vol au vent", "Chicken curry"};// List of the items used for lunches and hot food
 
-		String[] sides = { "Beans", "Crusty Roll", "Rice", "Peas", "Wedges", "Curly Fries", "Peppered Sauce Dip",
-				"Curry Dip", "Gravy Dip", }; // List of the sides available during lunch which are also under the hot
-												// food section
+		String[] sides = { "Beans", "Crusty Roll", "Rice", "Peas", "Wedges", "Curly Fries", "Peppered Sauce Dip","Curry Dip", "Gravy Dip"}; // List of the sides available during lunch which are also under the hot food section
 
-		String[] hotFood = { "Burger", "Lasagne", "Stew", "Veg / Chicken Soup", "Sausages", "Sausage Rolls",
-				"Vol au vent", "Chicken curry", "Beans", "Crusty Roll", "Rice", "Peas", "Wedges", "Curly Fries",
-				"Peppered Sauce Dip", "Curry Dip", "Gravy Dip" };
+		String[] meal = { "+1 side £5.00", "+1 side £4.50", "+ Crusty roll £2.75", "+ Crusty roll £2.75", "*Nothing available*", "*Nothing available*", "*Nothing available*", "*Nothing available*","(+1 side £3.50)\n\t\t\t\t\t  (+2 sides £4.00)"};
 		
-		hotFood.add("(1)Burger");
-		hotFood.add("(2)Lasagne");
-		hotFood.add("(3)Stew");
-		hotFood.add("(4)Veg Soup");
-		hotFood.add("(5)Chicken Soup");
-		hotFood.add("(6)White");
-
-		double[] prices = { 4.50, 4.00, 2.50, 2.50, 0.80, 0.80, 1.00, 3.00, 0.60, 0.40, 1.00, 0.60, 1.20, 1.20, 0.60,
-				0.60, 0.60 };
+		double[] itemPrices = { 4.50, 4.00, 2.50, 2.50, 2.50, 0.80, 0.80, 1.00, 3.00 };//Prices for items
+		
+		double[] sidePrices = { 0.60, 0.40, 1.00, 0.60, 1.20, 1.20, 0.60, 0.60, 0.60 };//Prices for sides
 
 		lunchToGoHotFood.home();
-		System.out.print("\n\nPlease choose an option above");
-		option = key.nextInt();
+		option = lunchToGoHotFood.printOption(option);
 
-		if (option == 3) {
-			System.out.printf("\n%-25s|%-25s|%-20s", "MEAT", "PRICES", "DEAL");
-			System.out.printf("\n----------------------------------------------------------------------------");
-			for (int i = 0; i < hotFood.length; i++) {
-				System.out.printf("\n%-25s|%-25.2f", hotFood[i], prices[i]);
-				System.out.printf("\n----------------------------------------------------------------------------");
+		switch (option)
+		{
+		/*case 1:
+	       	System.out.println("");
+	        break;
+		case 2:
+	       	System.out.println("");
+	        break;*/
+		case 3:
+			option = 0;
+			System.out.printf("\n%-20s|%-20s|%-20s", "HOT FOOD", "PRICE", "DEALS");
+			System.out.print("\n----------------------------------------------------------------");
+			for (int i = 0; i < items.length; i++) 
+			{
+				System.out.printf("\n\n%-1s)%-18s|£%-19.2f|%-20s", i+1, items[i], itemPrices[i], meal[i]);
+				//System.out.printf("\n----------------------------------------------");
 			}
+			option = lunchToGoHotFood.printOption(option);
+			lunchToGoHotFood.itemPrice(option);
+	        break;
+		/*case 4:
+	       	System.out.println("");
+	        break;
+	    default:
+	       	System.out.println("Invalid! You have not chose an option between 1-4");
+	        break;*/  
 		}
+		
 	}
+	static double itemPrice(int foodItem) {
 
-	public static double itemPrice(int foodItem) {
-		double itemPrice = 0;
+		double itemPrice = 0.0;
 
-		if (foodItem == 1) {
-			// burger= $4.50
-			System.out.println("You've ordered a burger");
+		char yesNo = ' ';
+		
+		switch (foodItem) 
+		{ 
+		case 1:
 			itemPrice = 4.50;
-		}
-		if (foodItem == 2) {
-			// lasagne = $4.00
-			System.out.println("You've ordered fries");
+			
+			System.out.printf("\nYou've ordered a burger (£%.2f)" ,itemPrice);
+			
+			yesNo = MyVal.validYN("\n\nMake it a meal?");
+				if (yesNo == 'N')
+				{
+					System.out.printf("\nAdded to basket");
+				}
+				else if (yesNo == 'Y')
+				{
+					itemPrice = 5.00;
+				}
+				break;
+		case 2:
 			itemPrice = 4.00;
-		}
-		if (foodItem == 3) {
-			// soda = $1.00
-			System.out.println("You've ordered a soda");
+			
+			System.out.printf("\nYou've ordered Lasagne (£%.2f)" ,itemPrice);
+			
+			MyVal.validYN("\n\nMake it a meal? (+1 side £4.50)");
+			
+			break;
+		case 3: 
+			
+			itemPrice = 2.50;
+			
+			System.out.printf("\nYou've ordered a Stew (£%.2f)" ,itemPrice);
+			
+			MyVal.validYN("\n\nMake it a meal? (+Crusty roll £2.75)");
+			
+			break;
+		case 4:
+			itemPrice = 2.50;
+			
+			System.out.printf("\nYou've ordered a Vegetable Soup (£%.2f)" ,itemPrice);
+			
+			MyVal.validYN("\n\nMake it a meal? (+Crusty roll £2.75)");
+
+			break;
+		case 5:
+			itemPrice = 2.50;
+			System.out.printf("\nYou've ordered a Chicken Soup (£%.2f)" ,itemPrice);
+			MyVal.validYN("\n\nMake it a meal? (+Crusty roll £2.75)");
+		
+			break;
+		case 6:
+			itemPrice = 0.80;
+			System.out.printf("\nYou've ordered Sausages (£%.2f)" ,itemPrice);
+			
+			break;
+		case 7:
+			itemPrice = 0.80;
+			System.out.printf("\nYou've ordered Sausage rolls (£%.2f)" ,itemPrice);
+			
+			break;
+		case 8:
 			itemPrice = 1.00;
-		}
-		if (foodItem == 3) {
-			// soda = $1.00
-			System.out.println("You've ordered a soda");
-			itemPrice = 1.00;
+			System.out.printf("\nYou've ordered Vol au vent (£%.2f)" ,itemPrice);
+			
+			break;
+		case 9:
+			int option = 0;
+			itemPrice = 3.00;
+			System.out.printf("\nYou've ordered a Chicken Curry (£%.2f)" ,itemPrice);
+			MyVal.validYN("\n\nMake it a meal?  \n(+1 side £3.50) \n(+2 sides £4.00)");
+			lunchToGoHotFood.printOption(option);
+			if (option == 1)
+			{
+				itemPrice = 3.50;
+				System.out.printf("\nYou've ordered a Chicken Curry meal with 1 side (£%.2f)" ,itemPrice);
+			}
+			else if (option == 2)
+			{
+				itemPrice = 4.00;
+				System.out.printf("\nYou've ordered a Chicken Curry meal with 2 side (£%.2f)" ,itemPrice);
+			}
+			break;
 		}
 		return itemPrice;
 	}
@@ -78,9 +153,20 @@ public class lunchToGoHotFood {
 	}
 
 	static void mainMenu() {
+
+		Scanner key = new Scanner(System.in);
 		System.out.printf("\n(1)%s \n\n(2)%s \n\n(3)%s \n\n(4)%s", "Sandwiches", "Salads", "Hot food", "Checkout");
 	}
 
+	public static int printOption(int choice)
+	{
+		int option = 0;
+		Scanner key = new Scanner(System.in); 
+		System.out.println("\n\nPlease choose an option above");
+		option = key.nextInt();
+		return option;
+	}
+	
 	static void printHeader() {
 		System.out.println("+-----------------------------------+");
 		System.out.println("|            Welcome to             |");
