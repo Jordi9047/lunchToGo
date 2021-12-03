@@ -1,0 +1,187 @@
+package Assignment;
+
+import java.util.Scanner;
+import java.util.ArrayList;
+import general.*;
+
+public class lunchToGoSandwich 
+{
+
+	public static void main(String[] args) 
+	{
+		
+		Scanner key = new Scanner(System.in);
+		
+		//The sandwich content are stored as an array list, like bread, spread, meat, etc.
+		
+		//???ArrayList<Integer> sandwichContent = new ArrayList<Integer>();
+		//???ArrayList<Integer> orderList = new ArrayList<Integer>();
+
+		//The bread type are stored as an array.
+		
+		ArrayList<String> breads = new ArrayList();  
+		
+		breads.add("White");
+		breads.add("Brown");
+		breads.add("Granary");
+		breads.add("White Roll");
+		breads.add("Brown Roll");
+		breads.add("White Wrap");
+		breads.add("Brown Wrap");
+		breads.add("Gluten Free Roll");
+		
+		//The spread choice are stored as an array.
+		
+		ArrayList<String> spreads = new ArrayList();  
+		
+		spreads.add("Butter");
+		spreads.add("Mayonnazise");
+		
+		//The meat choice are stored as an array.
+		
+		ArrayList<String> meat = new ArrayList<String>();  
+		
+		meat.add("Grilled Chicken");
+		meat.add("Breaded Chicken");
+		meat.add("Ham");
+		meat.add("Peperoni");
+		meat.add("turkey");
+		meat.add("Steak");
+		meat.add("Tuna");
+		meat.add("Chicken supreme");	
+		meat.add("Taco Chicken");
+		meat.add("Chicken Tikka");	
+		
+		//The meat choice are stored as an array.
+		
+		ArrayList<String> salad = new ArrayList<String>();  
+		
+		salad.add("Lettuce");
+		salad.add("Tomato");
+		salad.add("Onions");
+		salad.add("Peppers");
+		salad.add("Cucumber");
+		salad.add("Steetcorn");
+		salad.add("Cheese");
+		salad.add("Pickles");	
+		salad.add("Rice");
+		salad.add("Egg");	
+		salad.add("Spinach");
+		salad.add("Coleslaw");
+		
+
+		//The bread type are stored as an array.
+		
+		ArrayList<String> sauce = new ArrayList<String>();  
+		
+		sauce.add("Mayo");
+		sauce.add("Taco");
+		sauce.add("BBQ");
+		sauce.add("Ketchup");
+		sauce.add("HP Brown Sauce");
+	
+	
+		ArrayList<double[]> extrameat = new ArrayList<double[]>();
+		ArrayList<double[]> extrasalad = new ArrayList<double[]>();
+		ArrayList<double[]> totalbill = new ArrayList<double[]>();
+		
+		int main = 0;	
+		
+		String[] food = {"Sandwich", "Salad", "Hot food"};
+		
+		String[] spread = {"Butter", "Mayonnaise"};
+		
+		ArrayList<int[]> breadtype = new ArrayList<int[]>();
+		
+		int breadchoice = 0, spreadchoice = 0, meatchoice = 0, saladchoice = 0, saucechoice = 0;
+		//double[] sandwichcost = 3.00;
+		//double[] extrasalad = 0.35;
+		//double[] extrameat = 0.60;
+		
+		char checkout, extras;
+		
+		//The main menu display
+		My.p("\n\t --------------------------------------------");
+		My.p(String.format("\n\t|%-20s %11s", " Lunch Order Options - Main Menu", "|"));
+		My.p("\n\t --------------------------------------------");
+		My.p(String.format("\n\t|   %-18s %22s ", "A: Sandwiches", "|"));
+		My.p("\n\t --------------------------------------------");
+		My.p(String.format("\n\t|   %-18s %22s ", "B: Salad", "|"));
+		My.p("\n\t --------------------------------------------");
+		My.p(String.format("\n\t|   %-18s %22s ", "C: Hot Food", "|"));
+		My.p("\n\t --------------------------------------------");
+		
+		main = MyVal.validInt("\n\n\tPlease choose your food, 1, 2 or 3: ", 1, 3);
+				
+		if (main == 1)
+		{
+			//totalbill.add(sandwichcost);
+			
+			My.p("\tYou have chosen sandwich. A sandwich of one meat and 2 salad is £3.");
+			do
+			  {
+				
+					//Printing the Bread choices and getting the choice input
+					System.out.println("\n\t1." + breads.get(0) + "\t2." + breads.get(1) + "\t3." + breads.get(2)+ "\t4." 
+					+ breads.get(3) + "\t5." + breads.get(4)+ "\t6." + breads.get(5)+ "\n\t7." + breads.get(6) + "\t8." + breads.get(7));
+					breadchoice = MyVal.validInt("\n\tPlease enter the bread type: ", 1, 8);
+					
+					//Printing the Spread choices and getting the choice input
+					System.out.println("\n\t1." + spreads.get(0) + " 2." + spreads.get(1));
+					spreadchoice = MyVal.validInt("\n\tPlease  choose of the spread: ", 1, 2);
+					
+					do
+						{
+							System.out.println("\n\t1." + meat.get(0) + "\t2." + meat.get(1) + "\t3." + meat.get(2)+ "\t4." 
+									+ meat.get(3) + "\t5." + meat.get(4)+ "\n\t6." + meat.get(5)+ "\t7." + meat.get(6) + "\t8." 
+									+ meat.get(7)+ "\t9." + meat.get(8) + "\t10." + meat.get(9));
+							meatchoice = MyVal.validInt("\n\tPlease enter the meat choice: ", 1, 10);							
+							
+							My.p("\n\n\tWould you like any extras: ");
+							extras = key.nextLine().charAt(0);
+						
+						} while(Character.toUpperCase(extras) == 'Y');
+					
+					do
+						{
+							
+							System.out.println("\n\t1." + salad.get(0) + " 2." + salad.get(1) + " 3." + salad.get(2)+ " 4." 
+									+ salad.get(3) + " 5." + salad.get(4)+ " 6." + salad.get(5)+ " 7." + salad.get(6) + " 8." 
+									+ salad.get(7)+ " 9." + salad.get(8) + " 10." + salad.get(9)+ " 11." + salad.get(10) + " 12." + salad.get(11));
+							saladchoice = MyVal.validInt("\n\n\tPlease the choice of salad choice: ", 1, 12);
+							
+							
+							My.p("\ntWould you like any extras: ");
+							extras = key.nextLine().charAt(0);
+						
+						} while(Character.toUpperCase(extras) == 'Y');
+					
+					System.out.println("\n\n\t1." + sauce.get(0) + " 2." + sauce.get(1) + " 3." + sauce.get(2)+ " 4." 
+							+ sauce.get(3) + " 5." + sauce.get(4));
+					
+					saucechoice = MyVal.validInt("\n\n\n\tPlease the choice of sauce: ", 1, 3);
+					key.nextLine();
+					
+				 
+					
+				//extrasadded.add();
+				
+				My.p("\n\n\tWould you like to go to the check out: ");
+				checkout = key.nextLine().charAt(0);	
+				
+				
+			} while (Character.toUpperCase(checkout) == 'N');
+		}
+	
+		else if (main == 2)
+		{
+		
+		}
+		else
+		{
+			
+		}
+	
+	}
+
+}
