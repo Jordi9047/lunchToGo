@@ -8,8 +8,12 @@ public class Ex1 {
 	
 	static ArrayList<String> checkout= new ArrayList<String>();//Overall strings (and maybe prices) for printing the recipe
 	
+	//Final Reciept printing array lists
 	static ArrayList<String> hotFoodBasket= new ArrayList<String>();//Basket from hot food section to be added onto checkout for printing
+	static ArrayList<String> notes= new ArrayList<String>();
 	static ArrayList<Double> priceBasket= new ArrayList<Double>();
+	static ArrayList<Integer> qty= new ArrayList<Integer>();
+	static ArrayList<Double> subTotal= new ArrayList<Double>();
 	
 	static ArrayList<String> hotFoodArray= new ArrayList<String>();
 	static ArrayList<Double> hotFoodPrice= new ArrayList<Double>();
@@ -25,7 +29,15 @@ public class Ex1 {
 	
 	public static void main(String[] args)
 	{
+		arraysAdd();
 		
+		mainMenu();
+		
+	}
+	
+	static void arraysAdd()
+
+	{
 		hotFoodArray.add("Burger");
 		hotFoodArray.add("Lasagne");
 		hotFoodArray.add("Stew");
@@ -82,29 +94,6 @@ public class Ex1 {
 		sidesPrice.add(0.60);
 		sidesPrice.add(0.60);
 		sidesPrice.add(0.60);
-		
-		option = Ex1.home(option);
-		
-		switch (option)
-		{
-		/*case 1:
-	       	System.out.println("");
-	        break;
-		case 2:
-	       	System.out.println("");
-	        break;*/
-		case 3:
-			hotFood();
-	        break;
-		case 4:
-			reciept();
-	        break;
-		case 5:
-			admin();
-	    /*default:
-	       	System.out.println("Invalid! You have not chose an option between 1-4");
-	        break;*///With the correct validation our team has in place, we should never reach this default
-		}
 	}
 	
 	static void hotFood ()
@@ -133,9 +122,7 @@ public class Ex1 {
 		case 2:
 		case 3: 
 		case 4: //deliberate fall through here as the layout is exactly the same, but foodItem changes the item, price and meal deal text. More efficient and reusable if something in the system changes.
-			
-			foodItem = foodItem-1;
-			
+			foodItem = foodItem - 1;
 			System.out.printf("\nYou've ordered: \n%10s (£%.2f)", hotFoodArray.get(foodItem),hotFoodPrice.get(foodItem));
 			
 			yesNo = MyVal.validYN("\n\nMake it a meal? " +hotFoodMeal.get(foodItem));
@@ -143,10 +130,14 @@ public class Ex1 {
 			if (yesNo == 'N')
 				{
 					hotFoodBasket.add(hotFoodArray.get(foodItem));
-					System.out.printf("\n%Added to basket");
+					priceBasket.add(hotFoodPrice.get(foodItem));
+					System.out.println("\nAdded to basket");
+					goHome();
 				}
 			else
 			{
+				hotFoodBasket.add(hotFoodArray.get(foodItem)+ " Meal");
+				priceBasket.add(mealPrice.get(foodItem));
 				Ex1.sidesMenuDeal();
 			}
 			break;
@@ -157,6 +148,11 @@ public class Ex1 {
 		case 8:
 			foodItem = foodItem-1;
 			System.out.printf("\nYou've ordered: \n%10s (£%.2f)", hotFoodArray.get(foodItem),hotFoodPrice.get(foodItem));
+			hotFoodBasket.add(hotFoodArray.get(foodItem));
+			priceBasket.add(hotFoodPrice.get(foodItem));
+			quantity();
+			System.out.println("\nAdded to basket");
+			goHome();
 			break;
 			
 		case 9:
@@ -171,18 +167,22 @@ public class Ex1 {
 			if (yesNo == 'N')
 				{
 					hotFoodBasket.add(hotFoodArray.get(foodItem));
+					priceBasket.add(hotFoodPrice.get(foodItem));
 					System.out.printf("\nAdded to basket");
 					System.out.printf("\nAdded" + hotFoodBasket.toString());
 				}
 					else
 					{
+						hotFoodBasket.add(hotFoodArray.get(foodItem));
 						option = Ex1.printFoodOption(option);
 						if (option == 1)
 						{
+							priceBasket.add(mealPrice.get(4));
 							System.out.printf("\nYou've ordered a Chicken Curry meal with 1 side (£%.2f)" ,mealPrice.get(4));
 						}
 						else if (option == 2)
 						{
+							priceBasket.add(mealPrice.get(5));
 							System.out.printf("\nYou've ordered a Chicken Curry meal with 2 sides (£%.2f)" ,mealPrice.get(5));
 						}
 						Ex1.sidesMenuDeal();
@@ -192,15 +192,18 @@ public class Ex1 {
 		
 	static void reciept ()
 	{
-		ArrayList<Ex1> checkout = new ArrayList<Ex1>();
-		
-		System.out.printf("\n%-15s|%-15s|%-15s|%-15s|%-15s", "Item", "Notes", "Price", "Qty", "Subtotal");
-		System.out.print("\n--------------------------------------------------------------------------");
+		System.out.printf("\n%-25s|%-20s|%-15s|%-15s|%-15s", "Item", "Notes", "Price", "Qty", "Subtotal");
+		System.out.print("\n-------------------------------------------------------------------------------");
+		for (int i = 0; i < hotFoodBasket.size(); i++) 
+		{
+			System.out.printf("\n%-25s|%-20s|£%-14.2f|%-15s|£%-15.2f", hotFoodBasket.get(i), notes.get(i), priceBasket.get(i), qty.get(i), subTotal.get(i));
+			//System.out.printf("\n----------------------------------------------");
+		}
+		//System.out.print(hotFoodBasket.toString());
 	}
 	
 	static void sidesMenuDeal() 
 	{
-		
 		System.out.printf("\n%-24s|%-20s", "SIDES", "PRICE");
 		
 		System.out.print("\n----------------------------------");
@@ -215,11 +218,19 @@ public class Ex1 {
 		
 		System.out.println("\n" + sides.get(option-1) + "\nAdded as a side.");
 		
+		int quantity = quantity();
+		
+		qtyTotal(quantity, mealPrice.get(option-1));
+		
+		notes.add("+ " + sides.get(option-1) + " side");
+		
+		priceBasket.add(mealPrice.get(foodItem));
+		
 		yesNo = MyVal.validYN("\nReturn to hot food selection (Y), or home (N)?");
 		
 		if (yesNo == 'N')
 		{
-			option = Ex1.home(option);
+			mainMenu();
 		}
 			else if (yesNo == 'Y')
 			{
@@ -234,7 +245,7 @@ public class Ex1 {
 		
 		if (yesNo == 'N')
 		{
-			main(null);
+			mainMenu();
 		}
 			else if (yesNo == 'Y')
 			{
@@ -245,11 +256,39 @@ public class Ex1 {
 	static int home(int choice) {
 		int option = 0;
 		Ex1.printHeader();
-		Ex1.mainMenu();
+		Ex1.mainSelection();
 		return Ex1.printFoodOption(option);
 	}
 	
-	static void mainMenu() {
+	
+	static void mainMenu()
+	{
+
+		option = Ex1.home(option);
+		
+		switch (option)
+		{
+		/*case 1:
+	       	System.out.println("");
+	        break;
+		case 2:
+	       	System.out.println("");
+	        break;*/
+		case 3:
+			hotFood();
+	        break;
+		case 4:
+			reciept();
+	        break;
+		case 5:
+			admin();
+	    /*default:
+	       	System.out.println("Invalid! You have not chose an option between 1-4");
+	        break;*///With the correct validation our team has in place, we should never reach this default
+		}
+	}
+	
+	static void mainSelection() {
 
 		System.out.printf("\n(1)%s \n\n(2)%s \n\n(3)%s \n\n(4)%s \n\n(5)%s", "Sandwiches", "Salads", "Hot food", "Checkout", "Staff login");
 	}
@@ -268,44 +307,44 @@ public class Ex1 {
 		System.out.println("+-----------------------------------+");
 	}
 	
-	public static double quantity() 
+	public static int quantity() 
 	{
-		Scanner key = new Scanner(System.in);
-		System.out.println("Enter quantity");
-		double quantity = key.nextDouble();
-		subTotal(quantity, quantity);
-		key.close();
+		int quantity = MyVal.validInt("Enter quantity");
+		qty.add(quantity);
 		return quantity;
 	}
 	
-	public static double subTotal(double quantity, double itemPrice) {
-		double runningTotal = 0;
-		double subTotal = quantity * itemPrice;
-		System.out.println("Subtotal" + subTotal);
-		runningTotal += subTotal;
-		return subTotal;
+	public static double qtyTotal(double quantity, double itemPrice) {
+
+		double qtyTotal = quantity * itemPrice;
+		subTotal.add(qtyTotal);
+		return qtyTotal;
 	}
 
 	static void admin() /*Admin method will be used to identify a staff member, who can make changes to the system 
 						depending on stock levels, and remove items from being displayed accordingly. 
 						Of course, the staff member can also order, with their discount rate automatically applied*/
 	{
-		String staff_1 = "jmcelwee1";
-		String staff_2 = "treety1";
-		String staff_3 = "nmorrow1";
+		String staff_1 = "jmcelwee";
+		String staff_2 = "treety";
+		String staff_3 = "nmorrow";
 		String login = "";
-		
-		int count = 0;
 		
 		Scanner key = new Scanner (System.in);
 		My.p("Please enter your sign-in ID");
-		login = key.next();
+		login = key.nextLine();
 		
-		if (login != staff_1 | login != staff_2 | login != staff_3)
+		int count = 0;
+		
+		if (login.equals(staff_1)| login.equals(staff_2)| login.equals(staff_3))
+		{
+			My.pl("\nWelcome Staff member. Remeber you get an automatic 10% discount on your order");
+			mainMenu();
+		}
+		else
 		{
 			count = count++;
 			My.p("Incorrect sign in details!");
 		}
-		
 	}
 }
